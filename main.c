@@ -3,10 +3,13 @@
 char RotoEncryptLetter(char input, int key);
 
 int main() {
-    char message[] = "abcdefghijklmnopqrstuvwxyz";
+
+    char message[100];
+	scanf("%c", &message[100]);
+    
     char encrypted[100];
     
-    for (int i=0 ; i<26 ; i++) {
+    for (int i=0 ; i<100 ; i++) {
       encrypted[i] = RotoEncryptLetter(message[i], 3);
     }
 
@@ -29,7 +32,6 @@ char RotoEncryptLetter(char input, int key) {
        input -= 65;
        input = (input%26) + 65;       
     } 
-    
-    
+ 
 return input;
 }
