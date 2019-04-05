@@ -3,9 +3,9 @@
 char RotoEncryptLetter(char input, int key);
 
 int main() {
-
     char message[100];
-	scanf("%c", &message[100]);
+    scanf("%s", message); \\scan in from input.txt file
+    printf("the input is: %s\n", message);
     
     char encrypted[100];
     
@@ -13,7 +13,7 @@ int main() {
       encrypted[i] = RotoEncryptLetter(message[i], 3);
     }
 
-    printf("Encrypted Alphabet: %c %c %c %c\n", encrypted[0], encrypted[1], encrypted[2], encrypted[3]);
+    printf("Encrypted Input: %c %c %c %c\n", encrypted[0], encrypted[1], encrypted[2], encrypted[3]);
     printf("Encrypted String: %s", encrypted);
     
 }
