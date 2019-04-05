@@ -1,21 +1,20 @@
 #include <stdio.h>
+#include <string.h>
 
 char RotoEncryptLetter(char input, int key);
 
 int main() {
     char message[100];
-    /* scan in input.txt and assign to message*/
-    scanf("%s", message); 
-    printf("the input is: %s\n", message);
-    
     char encrypted[100];
     
-    for (int i=0 ; i<100 ; i++) {
-      encrypted[i] = RotoEncryptLetter(message[i], 3);
+    /* scan in input.txt and assign to message*/
+    for (int i=0; i<100; i++) {
+        scanf("%s", message); 
+        encrypted[i] = RotoEncryptLetter(message[i], 3);
     }
 
-    printf("Encrypted Input: %c %c %c %c\n", encrypted[0], encrypted[1], encrypted[2], encrypted[3]);
-    printf("Encrypted String: %s", encrypted);
+
+    printf("Encrypted String: %s\n", encrypted);
     
 }
 
