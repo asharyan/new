@@ -12,8 +12,14 @@ int main() {
         scanf("%[^\n]s", message); 
         encrypted[i] = RotoEncryptLetter(message[i], 3);
     }
-    
     printf("Encrypted String: %s\n", encrypted);
+    
+    char decrypted[100];
+    
+    for (int c=0; c<100; c++) {
+        decrypted[c] = RotoEncryptLetter(encrypted[c], -3);
+    }
+    printf("Decrypted String: %s\n", decrypted);
     
 }
 
