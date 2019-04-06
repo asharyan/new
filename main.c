@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <string.h>
+#include <strings.h>
 
 char RotoEncryptLetter(char input, int key);
 
@@ -9,11 +9,10 @@ int main() {
     
     /* scan in input.txt and assign to message*/
     for (int i=0; i<100; i++) {
-        scanf("%s", message); 
+        scanf("%[^\n]s", message); 
         encrypted[i] = RotoEncryptLetter(message[i], 3);
     }
-
-
+    
     printf("Encrypted String: %s\n", encrypted);
     
 }
