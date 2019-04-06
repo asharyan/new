@@ -2,6 +2,7 @@
 #include <strings.h>
 
 char RotoEncryptLetter(char input, int key);
+char RotoDecryptLetter(char input, int key);
 
 int main() {
     char message[100];
@@ -16,8 +17,9 @@ int main() {
     
     char decrypted[100];
     
+    /* decrypt encrypted message */
     for (int c=0; c<100; c++) {
-        decrypted[c] = RotoEncryptLetter(encrypted[c], -3);
+        decrypted[c] = RotoDecryptLetter(encrypted[c], 3);
     }
     printf("Decrypted String: %s\n", decrypted);
     
@@ -28,7 +30,7 @@ char RotoEncryptLetter(char input, int key) {
    
    /*converting lowercase to uppercase*/
     if ((input > 96) && (input < 123)) {
-       input = input - 32;
+       input -= 32;
     } 
     
     /*encrypt*/
@@ -38,5 +40,20 @@ char RotoEncryptLetter(char input, int key) {
        input = (input%26) + 65;       
     } 
  
+return input;
+}
+
+char RotoDecryptLetter(char input, int key) {
+    /*decrypt*/
+    if ((input > 64) && (input < 91)) {
+       input = input - key;
+       input -= 65;
+       input = (input%26) + 65;       
+    } 
+    /* ensuring letters remain in the uppercase range of ascii characters*/
+    if ((input > 62) && (input < 65)) {
+       input += 26; // do i need to worry about !@#$% etc??
+    }
+    
 return input;
 }
