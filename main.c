@@ -6,22 +6,26 @@ char RotoDecryptLetter(char input, int key);
 
 
 int main() {
-    char message[100];
+    
     char encrypted[100];
     
-    FILE *input;
-    input = fopen("input.txt", "r");
-    while(feof (input) == 0) {
-        char t;
-        //read a character
-        fscanf(input, "%c", &t);
-        // print that character to the console 
-        printf("%c\n", t);
+    FILE * database;
+    char message[100];
+
+    database = fopen("input.txt", "r");
+
+    if (NULL == database){
+         perror("opening database");
+         return (-1);
     }
-    
-    /* scan in input.txt and assign to message for rotation cipher*/
+
+    while (EOF != fscanf(database, "%30[^\n]\n", message)){
+         printf("%s\n", message);
+    }
+
+    fclose(database);
+
     for (int i=0; i<100; i++) {
-        scanf("%[^\n]s", message); 
         encrypted[i] = RotoEncryptLetter(message[i], 3);
     }
     printf("Encrypted Rotation String: %s\n", encrypted);
