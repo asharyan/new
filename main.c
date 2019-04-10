@@ -21,18 +21,17 @@ int main() {
     Output = fopen("Output.txt", "w"); // this is where the decrypted text will go.
 
     char message[100];
-    char UnseenCipher[100];
+    char UnseenMessage[100];
     
     /* scanning input.txt file and assigning to variable*/
     while (feof(MyInput) == 0) {
          fscanf(MyInput, "%s", message);
-         printf("%s", message); // how to make it print spaces as well? 
+         printf("%s\n", message); // how to make it print spaces as well? 
     }
 
     while (feof(Input) == 0) { 
-         fscanf(Input, "%s", UnseenCipher);
-         printf("%s", UnseenCipher);
-         fprintf(Output, "%s", UnseenCipher);
+         fscanf(Input, "%s", UnseenMessage);
+         printf("%s\n", UnseenMessage);
     }
     
     
@@ -49,6 +48,16 @@ int main() {
         decrypted[c] = RotoDecrypt(encrypted[c], 3);
     }
     printf("Decrypted Rotation String: %s\n", decrypted);
+    
+    
+    /* decrypt unseen message using brute force */
+    for (int i=0; i<26; i++) {
+        for (int l=0; l<26; l++) {
+            UnseenMessage[l] = BruteForceDecrypt(UnseenMessage[l], i);
+        }
+        fprintf(Output, "Decrypted Unseen Rotation String: %s\n", RotoDecrypt);
+    }
+
     
 }
 
@@ -89,9 +98,9 @@ char BruteForceDecrypt(char input, int key) {
     
     /*going through every key and placing them into an output.txt file*/
    if ((input > 64) && (input < 91)) {
-       for (int i = 0; i < 26; i++) {
-           input += key;
-       }
+       input = input + key;
+       input -= 65;
+       input = (input%26) + 65; 
    }
    return input;
 }
