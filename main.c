@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <strings.h>
 
+
 char RotoEncrypt(char input, int key);
 char RotoDecrypt(char input, int key);
 char BruteForceDecrypt(char input, int key);
@@ -9,29 +10,39 @@ char BruteForceDecrypt(char input, int key);
 int main() {
     
     char encrypted[100];
+    char decrypted[100];
     
-    FILE * database;
+    FILE * MyInput;
+    FILE * Input;
+    FILE * Output;
+
+    MyInput = fopen("MyInput.txt", "r"); // this is the plain text i have written to encrypt.
+    Input = fopen("Input.txt", "r"); // this is the unseen encrypted cipher.
+    Output = fopen("Output.txt", "w"); // this is where the decrypted text will go.
+
     char message[100];
-
-    database = fopen("input.txt", "r");
-
-    if (NULL == database){
-         perror("opening database");
-         return (-1);
+    char UnseenCipher[100];
+    
+    /* scanning input.txt file and assigning to variable*/
+    while (feof(MyInput) == 0) {
+         fscanf(MyInput, "%s", message);
+         printf("%s", message); // how to make it print spaces as well? 
     }
 
-    while (EOF != fscanf(database, "%30[^\n]\n", message)){
-         printf("input.txt reads: %s\n", message);
+    while (feof(Input) == 0) { 
+         fscanf(Input, "%s", UnseenCipher);
+         printf("%s", UnseenCipher);
+         fprintf(Output, "%s", UnseenCipher);
     }
-
-    fclose(database);
-
+    
+    
+    /*encrypt known message*/
     for (int i=0; i<100; i++) {
         encrypted[i] = RotoEncrypt(message[i], 3);
     }
-    printf("Encrypted Rotation String: %s\n", encrypted);
+    printf("Encrypted Rotation String: %s\n", encrypted); //ONLY USING LAST WORD IN MESSAGE???
     
-    char decrypted[100];
+    
     
     /* decrypt encrypted message */
     for (int c=0; c<100; c++) {
