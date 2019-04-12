@@ -2,20 +2,30 @@
 #include <strings.h>
 #include "task_select.h"
 
-void Roto(void);
+void RotoEncryption(void);
+void RotoDecryption(void);
 char RotoEncrypt(char input, int key);
 char RotoDecrypt(char input, int key);
-void Subs(void);
+void SubsEncryption(void);
+void SubsDecryption(void);
 char SubsEncrypt(char input, char *code);
 char SubsDecrypt(char input, char *code);
+void UnseenRotoDecryption(void);
 
 
 
 int main() {
+    
     switch(TASK_NUMBER) {
-        case 1: Roto();
+        case 1: RotoEncryption();
             break;
-        case 2: Subs();
+        case 2: RotoDecryption();
+            break;
+        case 3: SubsEncryption();
+            break;
+        case 4: SubsDecryption();
+            break;
+        case 5: UnseenRotoDecryption();
             break;
         default: printf("No Task Was Selected");
     }
@@ -23,22 +33,18 @@ int main() {
     
 }
 
-void Roto(void) {
+void RotoEncryption(void) {
+    
     char encrypted[100];
-    char decrypted[100];
     
     FILE * MyInput;
     FILE * MyOutput;
-    FILE * Input;
-    FILE * Output;
+    
 
     MyInput = fopen("MyInput.txt", "r"); // this is the plain text i have written to encrypt.
     MyOutput = fopen("MyOutput.txt", "w"); // this is where the decrypted text will go.
-    Input = fopen("Input.txt", "r"); // this is the unseen encrypted cipher.
-    Output = fopen("Output.txt", "w"); // this is where the decrypted text of the unseen cipher will go.
 
     char message[100];
-    char UnseenMessage[250];
     
     /* scanning input.txt file and assigning to variable*/
     int i = 0;
@@ -48,21 +54,39 @@ void Roto(void) {
     }
     message[i] = '\0';
     printf("\n");
-
-    int j = 0;
-    while (feof(Input) == 0) { 
-         fscanf(Input, "%c", &UnseenMessage[j]);
-         j++;
-    }
-    UnseenMessage[j] = '\0';
-    printf("\n");
+    
     
     /*encrypt known message*/
     for (int i=0; i<100; i++) {
         encrypted[i] = RotoEncrypt(message[i], 3);
     }
-    fprintf(MyOutput, "Encrypted Rotation String: %s\n", encrypted); //ONLY USING LAST WORD IN MESSAGE???
+    fprintf(MyOutput, "Encrypted Rotation String: %s\n", encrypted);
     
+    
+}
+
+void RotoDecryption(void) {
+    
+    char encrypted[100];
+    char decrypted[100];
+    
+    FILE * MyOutput;
+    /*
+     * 
+     * FIGURE OUT WHERE THE OUTPUT FOR THIS WILL GO
+     * 
+     */
+    
+    MyOutput = fopen("MyOutput.txt", "r"); // this is where the decrypted text will go.
+    
+    /* scanning input.txt file and assigning to variable*/
+    int i = 0;
+    while (feof(MyOutput) == 0) {
+         fscanf(MyOutput, "%c", &encrypted[i]); 
+         i++;
+    }
+    encrypted[i] = '\0';
+    printf("\n");
     
     
     /* decrypt encrypted message */
@@ -71,7 +95,25 @@ void Roto(void) {
     }
     fprintf(MyOutput, "Decrypted Rotation String: %s\n", decrypted);
     
-  
+}
+
+void UnseenRotoDecryption(void) {
+    
+    FILE * Input;
+    FILE * Output;
+    
+    Input = fopen("Input.txt", "r"); // this is the unseen encrypted cipher.
+    Output = fopen("Output.txt", "w"); // this is where the decrypted text of the unseen cipher will go.
+    
+    char UnseenMessage[250];
+    
+    int j = 0;
+    while (feof(Input) == 0) { 
+         fscanf(Input, "%c", &UnseenMessage[j]);
+         j++;
+    }
+    UnseenMessage[j] = '\0';
+    printf("\n");
     
     /* decrypt unseen message using brute force */
     for (int i=0; i<26; i++) {
@@ -114,13 +156,16 @@ char RotoDecrypt(char input, int key) {
 return input;
 }
 
-void Subs(void) {
-     char cipher[]="QWERTYUIOPASDFGHJKLZXCVBNM";
-     char alpha[]="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+void SubsEncryption(void) {
+    
+    char cipher[]="QWERTYUIOPASDFGHJKLZXCVBNM";
     
     /*reading message from test file*/
     FILE * MyInput;
+    FILE * MyOutput:
+    
     MyInput = fopen("MyInput.txt", "r"); // this is the plain text i have written to encrypt.
+    MyOutput = fopen("MyOutput.txt", "w"); 
 
     char message[100];
     
@@ -141,7 +186,33 @@ void Subs(void) {
     }
 
 
-    printf ("Original message: %s \nEncrypted message: %s\n", message, EncryptedMessage);
+    fprintf (MyOutput, "Original message: %s \nEncrypted message: %s\n", message, EncryptedMessage);    
+    
+}
+
+void SubsDecryption(void) {
+    
+    char cipher[]="QWERTYUIOPASDFGHJKLZXCVBNM";
+    
+    FILE * MyOutput:
+    
+    MyOutput = fopen("MyOutput.txt", "r");
+    
+    /*
+     * 
+     * FIGURE OUT WHERE OUTPUT WILL GO>>>
+     * 
+     */
+    
+    char EncryptedMessage[100];
+    
+    /* scanning input.txt file and assigning to variable*/
+    int i = 0;
+    while (feof(MyInput) == 0) {
+         fscanf(MyInput, "%c", &EncryptedMessage[i]); 
+         i++;
+    }
+    EncryptedMessage[i-1] = '\0';
     
     char DecryptedMessage[sizeof(EncryptedMessage)/sizeof(char)];
     /*implementing function*/
@@ -149,6 +220,11 @@ void Subs(void) {
     DecryptedMessage[i] = SubsDecrypt(EncryptedMessage[i], cipher);
     }
 
+/*
+ * 
+ * CHANGE TO FPRINTF vvvv
+ * 
+ */
 
     printf ("Original message: %s \nDecrypted message: %s\n", EncryptedMessage, DecryptedMessage);
     
