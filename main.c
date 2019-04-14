@@ -35,8 +35,6 @@ int main() {
 
 void RotoEncryption(void) {
     
-    char encrypted[100];
-    
     FILE * MyInput;
     FILE * MyOutput;
     
@@ -44,7 +42,8 @@ void RotoEncryption(void) {
     MyInput = fopen("MyInput.txt", "r"); // this is the plain text i have written to encrypt.
     MyOutput = fopen("MyOutput.txt", "w"); // this is where the encrypted text will go.
 
-    char message[100];
+    char message[250];
+    char encrypted[250];
     
     /* scanning input.txt file and assigning to variable*/
     int i = 0;
@@ -52,7 +51,7 @@ void RotoEncryption(void) {
          fscanf(MyInput, "%c", &message[i]); 
          i++;
     }
-    message[i] = '\0';
+    message[i-1] = '\0';
     printf("\n");
     
     
@@ -60,15 +59,15 @@ void RotoEncryption(void) {
     for (int i=0; i<100; i++) {
         encrypted[i] = RotoEncrypt(message[i], 3);
     }
-    fprintf(MyOutput, "Encrypted Rotation String: %s\n", encrypted); // printing enrypted text to MyOutput file
+    fprintf(MyOutput, "%s\n", encrypted); // printing enrypted text to MyOutput file
     
     
 }
 
 void RotoDecryption(void) {
     
-    char encrypted[100];
-    char decrypted[100];
+    char encrypted[250];
+    char decrypted[250];
     
     FILE * MyOutput;
     FILE * MyOutputDecrypted;
@@ -90,11 +89,18 @@ void RotoDecryption(void) {
     for (int c=0; c<100; c++) {
         decrypted[c] = RotoDecrypt(encrypted[c], 3);
     }
-    fprintf(MyOutputDecrypted, "Decrypted Rotation String: %s\n", decrypted); // printing decrypted text to MyOutputDecrypted file
+    fprintf(MyOutputDecrypted, "%s\n", decrypted); // printing decrypted text to MyOutputDecrypted file
     
 }
 
 void UnseenRotoDecryption(void) {
+    
+    /*
+     * 
+     * THIS FUNCTION ONLY SEEMS TO BE WORKING FOR SOME KEYS... FIX
+     * ALSO ISSUE CONVERTING LOWERCASE TO UPPERCASE??? IMPORTANT??
+     * 
+     */
     
     FILE * Input;
     FILE * Output;
@@ -102,14 +108,14 @@ void UnseenRotoDecryption(void) {
     Input = fopen("Input.txt", "r"); // this is the unseen encrypted cipher.
     Output = fopen("Output.txt", "w"); // this is where the decrypted text of the unseen cipher will go.
     
-    char UnseenMessage[250];
+    char UnseenMessage[300];
     
     int j = 0;
     while (feof(Input) == 0) { 
          fscanf(Input, "%c", &UnseenMessage[j]);
          j++;
     }
-    UnseenMessage[j] = '\0';
+    UnseenMessage[j-1] = '\0';
     printf("\n");
     
     /* decrypt unseen message using brute force */
@@ -117,7 +123,7 @@ void UnseenRotoDecryption(void) {
         for (j=0; j< (sizeof(UnseenMessage)/sizeof(char)); j++)
       
             UnseenMessage[j] = RotoDecrypt(UnseenMessage[j], i);
-            fprintf(Output, "Decrypted Unseen Rotation String: %s\t\tkey %d \n", UnseenMessage, i);
+            fprintf(Output, "%s\t\tkey %d \n", UnseenMessage, i);
     }
 }
 
@@ -164,7 +170,7 @@ void SubsEncryption(void) {
     MyInput = fopen("MyInput.txt", "r"); // this is the plain text i have written to encrypt.
     MyOutput = fopen("MyOutput.txt", "w"); 
 
-    char message[100];
+    char message[250];
     
     /* scanning input.txt file and assigning to variable*/
     int i = 0;
@@ -178,7 +184,7 @@ void SubsEncryption(void) {
     
     char EncryptedMessage[sizeof(message)/sizeof(char)];
     /*implementing function*/
-    for (int i = 0; i<26; i++) {
+    for (int i = 0; i<(sizeof(message)/sizeof(char)); i++) {
     EncryptedMessage[i] = SubsEncrypt(message[i], cipher);
     }
 
@@ -197,7 +203,7 @@ void SubsDecryption(void) {
     MyOutput = fopen("MyOutput.txt", "r");
     MyOutputDecrypted = fopen("MyOutputDecrypted.txt", "w");
     
-    char EncryptedMessage[100];
+    char EncryptedMessage[250];
     
     /* scanning myoutput.txt file and assigning to variable*/
     int i = 0;
@@ -209,7 +215,7 @@ void SubsDecryption(void) {
     
     char DecryptedMessage[sizeof(EncryptedMessage)/sizeof(char)];
     /*implementing function*/
-    for (int i = 0; i<100; i++) {
+    for (int i = 0; i<(sizeof(EncryptedMessage)/sizeof(char)); i++) {
     DecryptedMessage[i] = SubsDecrypt(EncryptedMessage[i], cipher);
     }
 
