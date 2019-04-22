@@ -44,6 +44,7 @@ void RotoEncryption(void) {
 
     char message[250];
     char encrypted[250];
+    int k = 15;
     
     /* scanning input.txt file and assigning to variable*/
     int i = 0;
@@ -57,7 +58,7 @@ void RotoEncryption(void) {
     
     /*encrypt known message*/
     for (int i=0; i<100; i++) {
-        encrypted[i] = RotoEncrypt(message[i], 3);
+        encrypted[i] = RotoEncrypt(message[i], k);
     }
     fprintf(MyOutput, "%s\n", encrypted); // printing enrypted text to MyOutput file
     
@@ -84,10 +85,11 @@ void RotoDecryption(void) {
     encrypted[i] = '\0';
     printf("\n");
     
+    int k = 15;
     
     /* decrypt encrypted message */
     for (int c=0; c<100; c++) {
-        decrypted[c] = RotoDecrypt(encrypted[c], 3);
+        decrypted[c] = RotoDecrypt(encrypted[c], k);
     }
     fprintf(MyOutputDecrypted, "%s\n", decrypted); // printing decrypted text to MyOutputDecrypted file
     
@@ -98,7 +100,8 @@ void UnseenRotoDecryption(void) {
     /*
      * 
      * THIS FUNCTION ONLY SEEMS TO BE WORKING FOR SOME KEYS... FIX
-     * ALSO ISSUE CONVERTING LOWERCASE TO UPPERCASE??? IMPORTANT??
+     * 
+     * there appears to be something wrong with the decryption function
      * 
      */
     
@@ -120,7 +123,7 @@ void UnseenRotoDecryption(void) {
     
     /* decrypt unseen message using brute force */
     for (int i=0; i<26; i++) {
-        for (j=0; j< (sizeof(UnseenMessage)/sizeof(char)); j++)
+        for (j=0; j<(sizeof(UnseenMessage)/sizeof(char)); j++)
       
             UnseenMessage[j] = RotoDecrypt(UnseenMessage[j], i);
             fprintf(Output, "%s\t\tkey %d \n", UnseenMessage, i);
@@ -137,18 +140,25 @@ char RotoEncrypt(char input, int key) {
     
     /*encrypt*/
     if ((input > 64) && (input < 91)) {
-       input = input + key;
+       input += key;
        input -= 65;
-       input = (input%26) + 65;       
+       input = (input%26);   
+       input += 65;
     } 
  
 return input;
 }
 
 char RotoDecrypt(char input, int key) {
+    
+    /*converting lowercase to uppercase*/
+    if ((input > 96) && (input < 123)) {
+       input -= 32;
+    } 
+    
     /*decrypt*/
     if ((input > 64) && (input < 91)) {
-       input = input - key;
+       input -= key;
        input -= 65;
        input = (input%26) + 65; 
        if ((input < 65) && (input > 0)) {
