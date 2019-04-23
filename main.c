@@ -12,6 +12,39 @@ char SubsEncrypt(char input, char *code);
 char SubsDecrypt(char input, char *code);
 void UnseenRotoDecryption(void);
 
+/*
+ * This program has been created to encrypt & decrypt messages both seen & unseen, using two different cipher algorithms - 
+ * rotation & substitution. The program has been created such that the user can select between five different options. This 
+ * has been done so using a header file under the name 'task_select.h', in which the user will 
+ * enter a number between 1 and 5. The function of each task is decribed below. 
+ * 
+ * TASK SELECTION
+ * 
+ *    Task Number 1 - Encrypts a message using a rotation cipher. The key for this cipher can be 
+ *                    changed in the RotoEncrypt Function by changing the value of the integer k. The message the user 
+ *                    wishes to encrypt should be written in the file 'MyInput.txt' foudn in 'master'. This will then change 
+ *                    any lowercase letters to uppercase, before encrypting the message with the given key. The encrypted
+ *                    can be found in the file 'MyOutput.txt' after the user runs the program.
+ * 
+ *    Task Number 2 - Decrypts the message that the user encrypted using Task 1. The decrypted message can be
+ *                    found in the file 'MyOutputDecryption.txt'. 
+ * 
+ *    Task Number 3 - Encrypts a message using a substitution cipher. The key for this cipher can be found in 
+ *                    the SubsEncrypt function, and is a type char under the name 'cipher'. The message the user wishes
+ *                    to encrypt should again be written in the file 'MyInput.txt'. The letters will be subsituted once the
+ *                    program runs, and the encrypted message can be found in the file 'MyOutput.txt'.
+ * 
+ *    Task Number 4 - Decrypts the messages that the user encrypted in Task 3. The Decrypted messsahe can be found in 
+ *                    in the file 'MyOutputDecrypted.txt' once the grogram has run. 
+ * 
+ *    Task Number 5 - Decrypts an unseen messaged which has been encrypted using a rotation cipher. The unseen message 
+ *                    should be placed in the file 'Input.txt' before running the program. Once the program has run, 
+ *                    the user can find a list of 26 messages with 25 possible rotations in the file 'output.txt'. Through
+ *                    human observation, the message which contains english words can be found, along with the key the 
+ *                    message used to encrypt it. 
+ * 
+ * 
+ */
 
 
 int main() {
@@ -44,7 +77,7 @@ void RotoEncryption(void) {
 
     char message[250];
     char encrypted[250];
-    int k = 15;
+    int k = 22;
     
     /* scanning input.txt file and assigning to variable*/
     int i = 0;
@@ -63,6 +96,25 @@ void RotoEncryption(void) {
     fprintf(MyOutput, "%s\n", encrypted); // printing enrypted text to MyOutput file
     
     
+}
+
+/* this function should ensure the input is uppercase only*/
+char RotoEncrypt(char input, int key) {
+   
+    /*converting lowercase to uppercase*/
+    if ((input > 96) && (input < 123)) {
+       input -= 32;
+    } 
+    
+    /*encrypt*/
+    if ((input > 64) && (input < 91)) {
+       input += key;
+       input -= 65;
+       input = (input%26);   
+       input += 65;
+    } 
+ 
+return input;
 }
 
 void RotoDecryption(void) {
@@ -85,7 +137,7 @@ void RotoDecryption(void) {
     encrypted[i] = '\0';
     printf("\n");
     
-    int k = 15;
+    int k = 22;
     
     /* decrypt encrypted message */
     for (int c=0; c<100; c++) {
@@ -98,10 +150,7 @@ void RotoDecryption(void) {
 void UnseenRotoDecryption(void) {
     
     /*
-     * 
-     * THIS FUNCTION ONLY SEEMS TO BE WORKING FOR SOME KEYS... FIX
-     * 
-     * there appears to be something wrong with the decryption function
+     * THIS FUNCTION ONLY SEEMS TO BE WORKING FOR odd-numbered shifts... FIX
      * 
      */
     
@@ -123,31 +172,13 @@ void UnseenRotoDecryption(void) {
     
     /* decrypt unseen message using brute force */
     for (int i=0; i<26; i++) {
-        for (j=0; j<(sizeof(UnseenMessage)/sizeof(char)); j++)
-      
+        for (j=0; j<(sizeof(UnseenMessage)/sizeof(char)); j++) 
             UnseenMessage[j] = RotoDecrypt(UnseenMessage[j], i);
             fprintf(Output, "%s\t\tkey %d \n", UnseenMessage, i);
     }
+    
 }
 
-/* this function should ensure the input is uppercase only*/
-char RotoEncrypt(char input, int key) {
-   
-    /*converting lowercase to uppercase*/
-    if ((input > 96) && (input < 123)) {
-       input -= 32;
-    } 
-    
-    /*encrypt*/
-    if ((input > 64) && (input < 91)) {
-       input += key;
-       input -= 65;
-       input = (input%26);   
-       input += 65;
-    } 
- 
-return input;
-}
 
 char RotoDecrypt(char input, int key) {
     
@@ -158,9 +189,10 @@ char RotoDecrypt(char input, int key) {
     
     /*decrypt*/
     if ((input > 64) && (input < 91)) {
-       input -= key;
        input -= 65;
+       input -= key;
        input = (input%26) + 65; 
+       /* The next part is to implement wrap-around for letters towards the end of the Alaphabet.  */
        if ((input < 65) && (input > 0)) {
             input += 26; 
         }
