@@ -15,8 +15,8 @@ void UnseenRotoDecryption(void);
 /*
  * This program has been created to encrypt & decrypt messages both seen & unseen, using two different cipher algorithms - 
  * rotation & substitution. The program has been created such that the user can select between five different options. This 
- * has been done so using a header file under the name 'task_select.h', in which the user will 
- * enter a number between 1 and 5. The function of each task is decribed below. 
+ * can been done so using the header file under the name 'task_select.h', in which the user can 
+ * enter a number between 1 and 5. The function of each task is described below. 
  * 
  * TASK SELECTION
  * 
@@ -77,9 +77,9 @@ void RotoEncryption(void) {
 
     char message[250];
     char encrypted[250];
-    int k = 22;
+    int k = 22; // this is the key. Its value will determine the shift of the cipher letters.
     
-    /* scanning input.txt file and assigning to variable*/
+    /* scanning input.txt file and assigning to variable 'message'*/
     int i = 0;
     while (feof(MyInput) == 0) {
          fscanf(MyInput, "%c", &message[i]); 
@@ -93,7 +93,7 @@ void RotoEncryption(void) {
     for (int i=0; i<100; i++) {
         encrypted[i] = RotoEncrypt(message[i], k);
     }
-    fprintf(MyOutput, "%s\n", encrypted); // printing enrypted text to MyOutput file
+    fprintf(MyOutput, "%s\n", encrypted); // printing enrypted text to 'MyOutput.txt' file
     
     
 }
@@ -137,13 +137,13 @@ void RotoDecryption(void) {
     encrypted[i] = '\0';
     printf("\n");
     
-    int k = 22;
+    int k = 22; // this should match the value of int k in the function RotoEncryption to ensure correct decryption.
     
     /* decrypt encrypted message */
     for (int c=0; c<100; c++) {
         decrypted[c] = RotoDecrypt(encrypted[c], k);
     }
-    fprintf(MyOutputDecrypted, "%s\n", decrypted); // printing decrypted text to MyOutputDecrypted file
+    fprintf(MyOutputDecrypted, "%s\n", decrypted); // printing decrypted text to 'MyOutputDecrypted.txt' file
     
 }
 
