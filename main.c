@@ -76,7 +76,7 @@ void RotoEncryption(void) {
 
     char message[250];// this is the vaiable i will assign my message to - limit of 250 chars
     char encrypted[250];// this is the variable i will give the encrypted message - limit of 250 chars
-    int k = 22; // this is the key. Its value will determine the shift of the cipher letters.
+    int k = 21; // this is the key. Its value will determine the shift of the cipher letters.
     
     /* scanning input.txt file and assigning to variable 'message'*/
     int i = 0;
@@ -132,7 +132,7 @@ void RotoDecryption(void) {
     
     char encrypted[250];// this is the variable that the encrypted message will be assigned to - limit of 250 chars
     char decrypted[250];// this is the variable that the decrypted message will be assigned to - limit of 250 chars
-    int k = 22; // this should match the value of int k in the function RotoEncryption to ensure correct decryption.
+    int k = 21; // this should match the value of int k in the function RotoEncryption to ensure correct decryption.
     
     /* scanning input.txt file and assigning to the variable 'encrypted'*/
     int i = 0;
@@ -166,7 +166,7 @@ void UnseenRotoDecryption(void) {
     Input = fopen("Input.txt", "r"); // this is the unseen encrypted cipher.
     Output = fopen("Output.txt", "w"); // this is where the decrypted text of the unseen cipher will go.
     
-    char UnseenMessage[300];// this is the vaiable the unseen message in 'Input.txt' will be assigned to - limit of 300 chars
+    char UnseenMessage[300], decrypted[300];// this is the vaiable the unseen message in 'Input.txt' will be assigned to - limit of 300 chars
     
     /* scanning 'Input.txt' file and assigning message to the variable 'UnseenMessage'*/
     int j = 0;
@@ -180,12 +180,12 @@ void UnseenRotoDecryption(void) {
     /* decrypt unseen message using brute force */
     for (int i=0; i<26; i++) {
         //going through 25 possible rotations (hence i<26) to find the key which gives the correct english message
-        for (j=0; j<(sizeof(UnseenMessage)/sizeof(char)); j++) 
-            // going through each char and implementing the RotoDecrypt function 
-            UnseenMessage[j] = RotoDecrypt(UnseenMessage[j], i);
-            
+        for (j=0; UnseenMessage[j]; j++) 
+            // going through each char and implementing the RotoDecrypt function
+            decrypted[j] = RotoDecrypt(UnseenMessage[j], i);
+        decrypted[j] = 0;
             // printing decrypted message possibilities to 'Output.txt' file
-            fprintf(Output, "%s\t\tkey %d \n", UnseenMessage, i);
+            fprintf(Output, "%s\t\tkey %d \n", decrypted, i);
             
     }
     
@@ -195,8 +195,8 @@ void UnseenRotoDecryption(void) {
  * this function "undoes" the encrypt function
  * this is done so by subrtracting the original key value from the encrypted message characters
  */
-char RotoDecrypt(char input, int key) {
-    
+char RotoDecrypt(char input, int key) { /// count frequency of most common letter 
+   
     /*converting lowercase to uppercase*/
     if ((input > 96) && (input < 123)) {
        input -= 32;
@@ -205,14 +205,15 @@ char RotoDecrypt(char input, int key) {
     /*decrypt*/
     if ((input > 64) && (input < 91)) {
        input -= 65;// "zeroing" the characters so that A=0, B=1, C=3... etc 
-       input -= key;// subtracting the key to return the character to its inital value 
+       input -= key;// subtracting the key to return the character to its inital value
+       
        input = (input%26) + 65; 
        /* The next part is to implement wrap-around for letters towards the end of the Alaphabet.  */
        if ((input < 65) && (input > 0)) {
             input += 26; 
         }
-    
-    }    
+    }
+   
 return input;
 }
 
