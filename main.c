@@ -155,18 +155,13 @@ void RotoDecryption(void) {
 
 void UnseenRotoDecryption(void) {
     
-    /*
-     * THIS FUNCTION ONLY SEEMS TO BE WORKING FOR odd-numbered shifts... FIX
-     * 
-     */
-    
     FILE * Input;
     FILE * Output;
     
     Input = fopen("Input.txt", "r"); // this is the unseen encrypted cipher.
     Output = fopen("Output.txt", "w"); // this is where the decrypted text of the unseen cipher will go.
     
-    char UnseenMessage[300], decrypted[300];// this is the vaiable the unseen message in 'Input.txt' will be assigned to - limit of 300 chars
+    char UnseenMessage[700], decrypted[700];// this is the vaiable the unseen message in 'Input.txt' will be assigned to - limit of 300 chars
     
     /* scanning 'Input.txt' file and assigning message to the variable 'UnseenMessage'*/
     int j = 0;
